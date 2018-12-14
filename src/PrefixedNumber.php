@@ -3,7 +3,6 @@
 namespace Aviator\Values;
 
 use Aviator\Values\Interfaces\IPNParser;
-use Aviator\Values\Parsers\PNParser as Parser;
 use Aviator\Values\Parsers\PNParser;
 
 class PrefixedNumber
@@ -47,6 +46,11 @@ class PrefixedNumber
     public function value (): string
     {
         return $this->prefix . $this->padded();
+    }
+
+    public function __toString (): string
+    {
+        return $this->value();
     }
 
     public function increment (int $by = 1): PrefixedNumber
