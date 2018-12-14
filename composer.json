@@ -1,0 +1,36 @@
+{
+    "name": "aviator/prefixed-number",
+    "type": "library",
+    "description": "A value object for numbers with prefixes.",
+    "keywords": [
+        "php",
+        "php7.2",
+        "strings"
+    ],
+    "homepage": "https://github.com/danielsdeboer/prefixed-number",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel S. Deboer",
+            "email": "daniel.s.deboer@gmail.com",
+            "homepage": "https://aviatorcreative.ca",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Aviator\\Values\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.2.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
+}
