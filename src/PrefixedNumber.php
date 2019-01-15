@@ -2,8 +2,8 @@
 
 namespace Aviator\Values;
 
-use Aviator\Values\Interfaces\IPNParser;
-use Aviator\Values\Parsers\PNParser;
+use Aviator\Values\Interfaces\Parser;
+use Aviator\Values\Parsers\Parser as DefaultParser;
 
 class PrefixedNumber
 {
@@ -25,16 +25,14 @@ class PrefixedNumber
 
     /**
      * @param string $string
-     * @param \Aviator\Values\Interfaces\IPNParser|null $parser
+     * @param \Aviator\Values\Interfaces\Parser|null $parser
      * @return \Aviator\Values\PrefixedNumber
-     * @throws \Aviator\Values\Exceptions\NotAPrefixedNumber
      */
-    public static function parse (
-        string $string,
-        IPNParser $parser = null
-    ): PrefixedNumber
+    public static function parse (string $string, Parser $parser = null): PrefixedNumber
     {
-        [$prefix, $number] = ($parser ?: new PNParser())->parse($string);
+        [$prefix, $number] = $parser
+            ? $parser($string)
+            : (new DefaultParser())($string);
 
         return new self(
             (int) $number,
