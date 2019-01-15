@@ -22,27 +22,45 @@ composer test
 
 Generally, you'll probably want to use `PrefixedNumber::parse($string)`. This will return a new `PrefixedNumber` instance.
 
+You can also instantiate it normally:
+
+```php
+$object = new PrefixedNumber($number, $prefix, $padding);
+```
+
 From there you can get a string representation of the object.
 
 ```php
-$valueObject->get(); // returns a string representation of the object. 
+$object->value(); // returns a string representation of the object. 
 ```
 
 You can also easily increment or decrement it:
 
 ```php
-$valueObject = PrefixedNumber::parse('X99');
+$object = new PrefixedNumber(99, 'X');
 
-$incremented = $valueObject->increment(); // Returns a new instance of Prefixed Number
-$decremented = $valueObject->decrement(); // As does this
+$incremented = $object->increment(); // Returns a new instance of PrefixedNumber
+$decremented = $object->decrement(); // As does this
 
-echo $incremented->get(); // 'X100'
-echo $decremented->get(); // 'X98'
+echo $object->value(); // 'X99'
+echo $incremented->value(); // 'X100'
+echo $decremented->value(); // 'X98'
+```
+
+You can also reset the number to 1:
+
+```php
+$object = new PrefixedNumber(99, 'X');
+
+$reset = $object->reset(); // Returns a new instance
+
+echo $object->value(); // 'X99'
+echo $reset->value(); // 'X1'
 ```
 
 ## Other
 
-The parser implements `IPNParser`. You can change how this class works by implementing that interface and injecting it as the second parameter of the static parse method:
+The parser implements `Aviator\Values\Interfaces\Parser`. You can change how this class works by implementing that interface and injecting it as the second parameter of the static parse method:
 
 ```php
 $valueObject = PrefixedNumber::parse('X99', new MyLittleParser());

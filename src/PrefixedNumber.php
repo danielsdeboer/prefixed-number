@@ -16,7 +16,7 @@ class PrefixedNumber
     /** @var int */
     private $padding;
 
-    public function __construct (int $number, string $prefix, int $padding)
+    public function __construct (int $number, string $prefix, int $padding = 0)
     {
         $this->number = $number;
         $this->prefix = $prefix;
@@ -32,7 +32,7 @@ class PrefixedNumber
     {
         [$prefix, $number] = $parser
             ? $parser($string)
-            : (new DefaultParser())($string);
+            : self::defaultParser()($string);
 
         return new self(
             (int) $number,
@@ -86,5 +86,10 @@ class PrefixedNumber
             '0',
             STR_PAD_LEFT
         );
+    }
+
+    private static function defaultParser (): Parser
+    {
+        return new DefaultParser();
     }
 }
