@@ -69,6 +69,15 @@ class PrefixedNumber
         );
     }
 
+    public function reset (): PrefixedNumber
+    {
+        return new self(
+            1,
+            $this->prefix,
+            $this->padding
+        );
+    }
+
     private function padded (): string
     {
         return str_pad(

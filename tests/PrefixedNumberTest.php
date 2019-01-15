@@ -58,6 +58,16 @@ class PrefixedNumberTest extends TestCase
         $this->assertSame('S00099', $decremented->value());
     }
 
+    /** @test */
+    public function resetting_to_1 ()
+    {
+        $number = new PrefixedNumber(22, 'PRE', 3);
+        $reset = $number->reset();
+
+        $this->assertSame('PRE022', $number->value());
+        $this->assertSame('PRE001', $reset->value());
+    }
+
     public function trying_to_decrement_below_one ()
     {
         $str = 'S01';
