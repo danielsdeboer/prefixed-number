@@ -5,6 +5,7 @@ namespace Tests;
 use Aviator\Values\Exceptions\NotAPrefixedNumber;
 use Aviator\Values\PrefixedNumber;
 use PHPUnit\Framework\TestCase;
+use Tests\Fixtures\TestParser;
 
 class PrefixedNumberTest extends TestCase
 {
@@ -57,6 +58,16 @@ class PrefixedNumberTest extends TestCase
         $this->assertSame('S00099', $decremented->value());
     }
 
+    /** @test */
+    public function resetting_to_1 ()
+    {
+        $number = new PrefixedNumber(22, 'PRE', 3);
+        $reset = $number->reset();
+
+        $this->assertSame('PRE022', $number->value());
+        $this->assertSame('PRE001', $reset->value());
+    }
+
     public function trying_to_decrement_below_one ()
     {
         $str = 'S01';
@@ -90,5 +101,13 @@ class PrefixedNumberTest extends TestCase
 
         $this->assertNotSame($original, $decremented);
         $this->assertSame('NICETRY98', $decremented->value());
+    }
+
+    /** @test */
+    public function using_a_different_parser ()
+    {
+        $parsed = PrefixedNumber::parse('X99', new TestParser());
+
+        $this->assertSame('test1', $parsed->value());
     }
 }

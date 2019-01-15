@@ -2,8 +2,8 @@
 
 namespace Aviator\Values;
 
-use Aviator\Values\Interfaces\IPNParser;
-use Aviator\Values\Parsers\PNParser;
+use Aviator\Values\Interfaces\Parser;
+use Aviator\Values\Parsers\Parser as DefaultParser;
 
 class PrefixedNumber
 {
@@ -16,7 +16,7 @@ class PrefixedNumber
     /** @var int */
     private $padding;
 
-    public function __construct (int $number, string $prefix, int $padding)
+    public function __construct (int $number, string $prefix, int $padding = 0)
     {
         $this->number = $number;
         $this->prefix = $prefix;
@@ -25,16 +25,14 @@ class PrefixedNumber
 
     /**
      * @param string $string
-     * @param \Aviator\Values\Interfaces\IPNParser|null $parser
+     * @param \Aviator\Values\Interfaces\Parser|null $parser
      * @return \Aviator\Values\PrefixedNumber
-     * @throws \Aviator\Values\Exceptions\NotAPrefixedNumber
      */
-    public static function parse (
-        string $string,
-        IPNParser $parser = null
-    ): PrefixedNumber
+    public static function parse (string $string, Parser $parser = null): PrefixedNumber
     {
-        [$prefix, $number] = ($parser ?: new PNParser())->parse($string);
+        [$prefix, $number] = $parser
+            ? $parser($string)
+            : self::defaultParser()($string);
 
         return new self(
             (int) $number,
@@ -71,6 +69,15 @@ class PrefixedNumber
         );
     }
 
+    public function reset (): PrefixedNumber
+    {
+        return new self(
+            1,
+            $this->prefix,
+            $this->padding
+        );
+    }
+
     private function padded (): string
     {
         return str_pad(
@@ -79,5 +86,10 @@ class PrefixedNumber
             '0',
             STR_PAD_LEFT
         );
+    }
+
+    private static function defaultParser (): Parser
+    {
+        return new DefaultParser();
     }
 }
